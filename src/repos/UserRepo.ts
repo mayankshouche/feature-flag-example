@@ -80,6 +80,16 @@ async function delete_(id: number): Promise<void> {
   }
 }
 
+async function softDelete(id: number): Promise<void> {
+  const db = await orm.openDb();
+  for (let i = 0; i < db.users.length; i++) {
+    if (db.users[i].id === id) {
+      db.users[i].isDeleted = true;
+      return orm.saveDb(db);
+    }
+  }
+}
+
 
 // **** Export default **** //
 
@@ -90,4 +100,5 @@ export default {
   add,
   update,
   delete: delete_,
+  softDelete,
 } as const;
