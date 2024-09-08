@@ -70,12 +70,6 @@ async function _delete(id: number): Promise<void> {
     );
   }
 
-  const hardDelete = featureService.isEnabled('hardDeleteUsers');
-  if (hardDelete) {
-    return UserRepo.delete(id);
-  }
-
-  // Soft delete user
   return UserRepo.softDelete(id);
 }
 
