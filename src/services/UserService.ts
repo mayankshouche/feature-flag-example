@@ -3,7 +3,6 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import UserRepo from '@src/repos/UserRepo';
 import { IUser } from '@src/models/User';
-import featureService from '@src/flags';
 
 
 // **** Variables **** //
@@ -24,13 +23,6 @@ function getAll(): Promise<IUser[]> {
  * Add one user.
  */
 function addOne(user: IUser): Promise<void> {
-  const allowSignups = featureService.isEnabled('allowSignups');
-  if (!allowSignups) {
-    throw new RouteError(
-      HttpStatusCodes.FORBIDDEN,
-      'Signups are not allowed',
-    );
-  }
   return UserRepo.add(user);
 }
 
@@ -61,12 +53,6 @@ async function _delete(id: number): Promise<void> {
     );
   }
 
-  const hardDelete = featureService.isEnabled('hardDeleteUsers');
-  if (hardDelete) {
-    return UserRepo.delete(id);
-  }
-
-  // Soft delete user
   return UserRepo.softDelete(id);
 }
 
