@@ -1,5 +1,4 @@
 const defaultFlags = {
-    hardDeleteUsers: false,
     allowSignups: true,
     allowEmailUpdate: true,
   };
