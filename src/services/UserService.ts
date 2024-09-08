@@ -46,14 +46,6 @@ async function updateOne(user: IUser): Promise<void> {
     );
   }
 
-  const allowEmailUpdate = featureService.isEnabled('allowEmailUpdate');
-  if (!allowEmailUpdate) {
-    throw new RouteError(
-      HttpStatusCodes.FORBIDDEN,
-      'Email update is not allowed',
-    );
-  }
-
   // Return user
   return UserRepo.update(user);
 }
@@ -68,11 +60,6 @@ async function _delete(id: number): Promise<void> {
       HttpStatusCodes.NOT_FOUND,
       USER_NOT_FOUND_ERR,
     );
-  }
-
-  const hardDelete = featureService.isEnabled('hardDeleteUsers');
-  if (hardDelete) {
-    return UserRepo.delete(id);
   }
 
   // Soft delete user
