@@ -45,6 +45,15 @@ async function updateOne(user: IUser): Promise<void> {
       USER_NOT_FOUND_ERR,
     );
   }
+
+  const allowEmailUpdate = featureService.isEnabled('allowEmailUpdate');
+  if (!allowEmailUpdate) {
+    throw new RouteError(
+      HttpStatusCodes.FORBIDDEN,
+      'Email update is not allowed',
+    );
+  }
+
   // Return user
   return UserRepo.update(user);
 }
