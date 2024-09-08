@@ -24,13 +24,6 @@ function getAll(): Promise<IUser[]> {
  * Add one user.
  */
 function addOne(user: IUser): Promise<void> {
-  const allowSignups = featureService.isEnabled('allowSignups');
-  if (!allowSignups) {
-    throw new RouteError(
-      HttpStatusCodes.FORBIDDEN,
-      'Signups are not allowed',
-    );
-  }
   return UserRepo.add(user);
 }
 
@@ -68,11 +61,6 @@ async function _delete(id: number): Promise<void> {
       HttpStatusCodes.NOT_FOUND,
       USER_NOT_FOUND_ERR,
     );
-  }
-
-  const hardDelete = featureService.isEnabled('hardDeleteUsers');
-  if (hardDelete) {
-    return UserRepo.delete(id);
   }
 
   // Soft delete user
